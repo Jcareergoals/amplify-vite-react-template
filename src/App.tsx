@@ -7,7 +7,7 @@ const client = generateClient<Schema>();
 
 function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-  const { signOut } = useAuthenticator();
+  const { user, signOut } = useAuthenticator();
 
   useEffect(() => {
     client.models.Todo.observeQuery().subscribe({
@@ -23,9 +23,12 @@ function App() {
     client.models.Todo.delete({ id });
   }
 
+  console.log(user);
+
   return (
     <main>
       <h1>My todos</h1>
+      <h2>{user?.signInDetails?.loginId}'s todos</h2>
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (
